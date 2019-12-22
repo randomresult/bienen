@@ -1,0 +1,3 @@
+[submodule "ng-maja-monitoring"]
+	path = ng-maja-monitoring
+	url = ssh://git@bitbucket.analogserver.de:7999/hon/ng-maja-monitoring.git

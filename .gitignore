@@ -1,0 +1,7 @@
+/Data/*
+!/data/.gitkeep
+/node_modules
+/.idea
+/sync.sh
+/sync_down.sh
+/env.php
