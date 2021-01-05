@@ -11,12 +11,11 @@ class readData
     {
 
         $data = [];
-        $files = glob($dataDir . "/" . $unit . "/" . $type . "/*.json");
+        $files = glob("{$dataDir}/{$unit}/{$type}/*.json");
         foreach ($files as $file) {
             $data[] = json_decode(file_get_contents($file), 1);
         }
-
-
+        
         return $data;
 
     }
@@ -32,6 +31,11 @@ class readData
     private function filterUnitNames(array $folders)
     {
         return array_filter($folders, 'is_numeric');
+    }
+
+    public function getLongitude($unit, $dataDir, $type)
+    {
+        return $this->lastKnownPosition($this->readFileFromDirectory($unit, $dataDir, $type))['long'];
     }
 
     private function readTempJson($dataDir)
@@ -96,8 +100,8 @@ class readData
     {
         $data = $this->readFileFromDirectory($unit, $dataDir, $type);
         $pos = ($this->lastKnownPosition($data));
-        $long = $pos[long];
-        $lat = $pos[lat];
+        $long = $pos['long'];
+        $lat = $pos['lat'];
         echo "<img src='https://maps.googleapis.com/maps/api/staticmap?center=". $lat .",". $long ."&markers=" . $lat .",". $long ."&zoom=14&size=600x400&key=AIzaSyCQfzSfgdu7hSjQ5T7Cb2gqHhomoo2gDfE'/>" ;
 
     }

@@ -6,7 +6,6 @@ require_once "Classes/readData.php";
 require_once "Classes/writeData.php";
 
 
-
 if (isset($_POST["unit"])) {
     $unit = $_POST["unit"];
 } else {
@@ -23,7 +22,7 @@ if (isset($_POST["newunit"])) {
 ?>
 
 <div class="container">
-    <h1 >Logeinträge für Beute Nr. <?php echo $unit ?></h1>
+    <h1>Logeinträge für Beute Nr. <?php echo $unit ?></h1>
     <form action="manualLog.php" method="POST">
         <input id="unit" name="unit" type="hidden" value="<?php echo $unit ?>"/>
         <button class="btn btn-primary">Neuer Eintrag</button>
@@ -34,35 +33,38 @@ if (isset($_POST["newunit"])) {
         <button class="uk-button uk-button-default">Beute umbenennen</button>
     </form>
     <div class="uk-overflow-auto">
-    <table class="table ">
-        <thead>
-        <tr>
-            <th>Date</th>
-            <th>BW</th>
-            <th>FW</th>
-            <th>MW</th>
-            <th>KÖ</th>
-            <th>SM</th>
-            <th>VA</th>
-            <th>HR</th>
-            <th>SCHWARM</th>
-            <th>Behandelt</th>
-        </tr>
-        </thead>
-        <tfoot>
-        <tr>
-            <td colspan="10">Legende: BW = Brutwabe / FW = Futterwabe / MW = Mittelwand / KÖ = Königin geshen / SM = Sanftmut / VA = Varroa / HR = Anzahl Honigräume / Schwarm = Schwarmstimmung</td>
-        </tr>
-        </tfoot>
-        <tbody>
-        <?php
-            $content = new readData($unit,$dataDir,'log');
-            $content->printDataArray($unit  ,$dataDir, 'log');
-        ?>
-        </tbody>
-    </table>
+        <table class="table ">
+            <thead>
+            <tr>
+                <th>Date</th>
+                <th>BW</th>
+                <th>FW</th>
+                <th>MW</th>
+                <th>KÖ</th>
+                <th>SM</th>
+                <th>VA</th>
+                <th>HR</th>
+                <th>SCHWARM</th>
+                <th>Behandelt</th>
+            </tr>
+            </thead>
+            <tfoot>
+            <tr>
+                <td colspan="10">Legende: BW = Brutwabe / FW = Futterwabe / MW = Mittelwand / KÖ = Königin geshen / SM =
+                    Sanftmut / VA = Varroa / HR = Anzahl Honigräume / Schwarm = Schwarmstimmung
+                </td>
+            </tr>
+            </tfoot>
+            <tbody>
+            <?php
+            $content = new readData($unit, $dataDir, 'log');
+            $content->printDataArray($unit, $dataDir, 'log');
+            ?>
+            </tbody>
+        </table>
     </div>
-    <h3 class="uk-heading-medium uk-heading-divider uk-text-center">Letztes erfasstes Gewicht: <?php echo $lastWeight ?> kg.</h3>
+    <h3 class="uk-heading-medium uk-heading-divider uk-text-center">Letztes erfasstes Gewicht: <?php echo $lastWeight ?>
+        kg.</h3>
 
 
     <canvas id="myChart"></canvas>
@@ -77,9 +79,9 @@ if (isset($_POST["newunit"])) {
                 labels: [
                     <?php
                     foreach ($data[$unit] AS $itemsdate) {
-                    echo "'" ;
-                    echo date("d.m", htmlentities($itemsdate['timestamp'])) ;
-                    echo "',";
+                        echo "'";
+                        echo date("d.m", htmlentities($itemsdate['timestamp']));
+                        echo "',";
                     }
                     ?>
                 ],
@@ -90,8 +92,8 @@ if (isset($_POST["newunit"])) {
                     data: [
                         <?php
                         foreach ($data[$unit] AS $itemsweight) {
-                            echo "'" ;
-                            echo htmlentities($itemsweight['weight']) ;
+                            echo "'";
+                            echo htmlentities($itemsweight['weight']);
                             echo "',";
                         }
                         ?>
@@ -106,8 +108,10 @@ if (isset($_POST["newunit"])) {
     <div id="mapholder">
         <h1 class="uk-heading-medium uk-heading-divider uk-text-center">Last Known GPS</h1>
         <?php
-            $gps = new readData($unit,$dataDir,'log');
-            echo  $gps->printGPSData($unit  ,$dataDir, 'log');
+        $gps = new readData();
+        echo $gps->printGPSData($unit, $dataDir, 'log');
+        echo $gps->getLongitude($unit, $dataDir, 'log');
+
         ?>
     </div>
 </div>
