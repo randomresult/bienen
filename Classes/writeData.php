@@ -6,14 +6,13 @@ class writeData
     {
     }
 
-    private function checkAndCreateDirectory($unit)
+    private function checkAndCreateDirectory($unit, $givenpath)
     {
-        $path = "Data/" . $unit;
+        $path = "$givenpath" . $unit;
         if (!file_exists($path)) {
             mkdir($path, 0755, true);
-            mkdir($path . "/weight", 0755, true);
+            mkdir($path . "/auto", 0755, true);
             mkdir($path . "/log", 0755, true);
-            mkdir($path . "/temp", 0755, true);
         }
     }
 
@@ -38,55 +37,39 @@ class writeData
 
 
 
-    private function buildTempLogItem($temp, $humidity)
+    private function buildAutoLogItem( $temp, $humidity, $weight)
     {
         return[
             "timestamp" => time(),
             "temp" => $temp,
-            "humidity" => $humidity
+            "humidity" => $humidity,
+            "weight" => $weight,
         ];
-    }
-
-
-    private function buildWeightLogItem($weight)
-    {
-        $item = [
-            "timestamp" => time(),
-            "weight" => $weight
-        ];
-        $newdata[1][] = $item;
-        return $newdata;
-
     }
 
 
 
     public function writeLogJson($unit, $brood, $food, $emptycombs, $queen, $gentleness, $varroa, $honeyspace, $swarm,  $treatment,$latitude, $longitude)
     {
-        $this->checkAndCreateDirectory($unit);
+        $givenpath = "Data";
+        $this->checkAndCreateDirectory($unit, $givenpath);
         $data = [];
         $data = $this->buildLogItem($unit, $brood, $food, $emptycombs, $queen, $gentleness, $varroa, $honeyspace, $swarm,  $treatment, $latitude, $longitude);
         $newJson = json_encode($data);
-        $file = "Data/" . $unit . "/log/" .date('d-m-Y-h-i-s') .".json";
+        $file = $givenpath . "/" . $unit . "/log/" .date('d-m-Y-h-i-s') .".json";
         file_put_contents($file, $newJson);
 
     }
 
-    public function writeLogTempJson($temp, $humidity)
-    {
-        $data = [];
-        $data = $this->buildTempLogItem($temp, $humidity);
-        $newJson = json_encode($data);
-        $file = "../Data/temp/" .date('d-m-Y-h-i-s') .".json";
-        file_put_contents($file, $newJson);
 
-    }
-    public function writeLogWeightJson($weight)
+    public function writeAutoLogItem($unit, $temp, $humidity, $weight)
     {
+        $givenpath = "../Data/";
+        $this->checkAndCreateDirectory($unit, $givenpath);
         $data = [];
-        $data = $this->buildWeightLogItem($weight);
+        $data = $this->buildAutoLogItem($temp, $humidity, $weight );
         $newJson = json_encode($data);
-        $file = "../Data/weight/" .date('d-m-Y-h-i-s') .".json";
+        $file = $givenpath . $unit . "/auto/" .date('d-m-Y-h-i-s') .".json";
         file_put_contents($file, $newJson);
 
     }
@@ -120,6 +103,8 @@ class writeData
 
     }
 
+
+    //maybe not needed anymore...
     public function directory($unit)
     {
         $this->checkAndCreateDirectory($unit);
