@@ -63,57 +63,32 @@ if (isset($_POST["newunit"])) {
             </tbody>
         </table>
     </div>
-    <h3 class="uk-heading-medium uk-heading-divider uk-text-center">Letztes erfasstes Gewicht: <?php echo $lastWeight ?>
+    <h3 class="uk-heading-medium uk-heading-divider uk-text-center">Letztes erfasstes Gewicht:
         kg.</h3>
 
-
-    <canvas id="myChart"></canvas>
+    <canvas id="myChart" width="400" height="100"></canvas>
     <script>
-        var ctx = document.getElementById('myChart').getContext('2d');
-        var chart = new Chart(ctx, {
-            // The type of chart we want to create
-            type: 'bar',
-
-            // The data for our dataset
+        var ctx = document.getElementById('myChart');
+        var myChart = new Chart(ctx, {
+            type: 'line',
             data: {
-                labels: [
-                    <?php
-                    foreach ($data[$unit] AS $itemsdate) {
-                        echo "'";
-                        echo date("d.m", htmlentities($itemsdate['timestamp']));
-                        echo "',";
-                    }
-                    ?>
-                ],
+                labels: ['01.01', '02.01', '03.01', '04.01', '05.01', '06.01', '07.01', '08.01', '09.01', '10.01', '11.01', '12.01', '13.01', '14.01', '15.01'],
                 datasets: [{
                     label: 'Gewicht',
-                    backgroundColor: 'rgb(255, 99, 132)',
-                    borderColor: 'rgb(255, 99, 132)',
-                    data: [
-                        <?php
-                        foreach ($data[$unit] AS $itemsweight) {
-                            echo "'";
-                            echo htmlentities($itemsweight['weight']);
-                            echo "',";
-                        }
-                        ?>
-                    ]
+                    data: [14.5, 15.0, 16.3, 16.4, 2, 3, 3, 5, 6, 7, 8, 6, 3, 5, 7],
                 }]
             },
-
-            // Configuration options go here
-            options: {}
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
         });
     </script>
-    <div id="mapholder">
-        <h1 class="uk-heading-medium uk-heading-divider uk-text-center">Last Known GPS</h1>
-        <?php
-        $gps = new readData();
-        echo $gps->printGPSData($unit, $dataDir, 'log');
-        echo $gps->getLongitude($unit, $dataDir, 'log');
-
-        ?>
-    </div>
 </div>
 <?php
 include_once "Partials/Footer.php";
